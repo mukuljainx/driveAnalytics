@@ -35,3 +35,11 @@ Save per 5 second data into file then transfer to DB
 - Trips [ with label, userid, tripid]
 - Individual trips [ all details - speed, load, lat long per second]
 - car [car details]
+
+
+## How it works (tentative)
+
+- Driver logs into the device, selects his car
+- Starts the car
+- A request is sent to server as soon as car starts to fetch a trip ID and driver ID
+- Trip Session starts
