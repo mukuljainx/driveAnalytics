@@ -1,0 +1,17 @@
+vehicle engineLoad=16.1, engineSpeed=3, throttle=3.9, vehicleSpeed=3, 1000000000
+vehicle engineLoad=27.5, engineSpeed=20, throttle=10.2, vehicleSpeed=20, 2000000000
+vehicle engineLoad=27.5, engineSpeed=25, throttle=26.7, vehicleSpeed=25, 3000000000
+vehicle engineLoad=27.5, engineSpeed=28, throttle=36.5, vehicleSpeed=28, 4000000000
+vehicle engineLoad=27.5, engineSpeed=28, throttle=38.8, vehicleSpeed=28, 5000000000
+vehicle engineLoad=27.5, engineSpeed=33, throttle=38.8, vehicleSpeed=33, 6000000000
+vehicle engineLoad=27.5, engineSpeed=37, throttle=43.5, vehicleSpeed=37, 7000000000
+vehicle engineLoad=27.5, engineSpeed=39, throttle=46.3, vehicleSpeed=39, 8000000000
+vehicle engineLoad=28.2, engineSpeed=46, throttle=51.8, vehicleSpeed=46, 9000000000
+vehicle engineLoad=27.5, engineSpeed=49, throttle=57.6, vehicleSpeed=49, 10000000000
+vehicle engineLoad=27.5, engineSpeed=58, throttle=63.1, vehicleSpeed=58, 11000000000
+vehicle engineLoad=27.5, engineSpeed=65, throttle=67.1, vehicleSpeed=65, 12000000000
+vehicle engineLoad=28.2, engineSpeed=66, throttle=67.1, vehicleSpeed=66, 13000000000
+vehicle engineLoad=28.2, engineSpeed=68, throttle=73.3, vehicleSpeed=68, 14000000000
+vehicle engineLoad=28.2, engineSpeed=70, throttle=75.3, vehicleSpeed=70, 15000000000
+vehicle engineLoad=28.2, engineSpeed=73, throttle=82.7, vehicleSpeed=73, 16000000000
+vehicle engineLoad=28.2, engineSpeed=77, throttle=86.3, vehicleSpeed=77, 17000000000
