@@ -11,9 +11,13 @@ var tripSchema = mongoose.Schema({
     tripDriver      : String, // who is driving the car
     boardingPoint   : {x : Number, y : Number},
     destinationPoint: {x : Number, y : Number},
+    status          : Boolean // false means new
     destination     : String,
     boarding        : String,
-    status          : Boolean // false means new
+    // boarding        : String, extra's for speed, acc, turnng ack
+    // boarding        : String,
+    // boarding        : String,
+    // boarding        : String,
 },{timestamps : {}});
 // userSchema.plugin(mongoose_csv);
 // create the model for users and expose it to our app

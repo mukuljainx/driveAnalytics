@@ -24,22 +24,28 @@ boarding        : String,
 
 ### Trip Details
 Type : Post  
-endpoint : ```/trip/list```  
+endpoint : ```/trip/detail```  
 reqBody :
 ```
-tridId : String
+tripId : String
 ```
 Return:
 ```
-[
-    {
-        "time":"1970-01-01T00:00:01.000Z",
-        "engineLoad":16.1,
-        "engineSpeed":3,
-        "throttle":3.9,
-        "vehicleSpeed":3,
-        "latlongx" : 123123,
-        "latlongy" : 12123,
-    },...
-]
+{
+    parameter1Rating : Number,
+    parameter2Rating : Number,
+    parameter3Rating : Number,
+    parameter4Rating : Number,
+    [
+        {
+            "time":String,
+            "engineLoad":Number,
+            "engineSpeed":Number,
+            "throttle":Number,
+            "vehicleSpeed":Number,
+            "latlongx" : Number,
+            "latlongy" : Number,
+        },...
+    ]
+}
 ```
