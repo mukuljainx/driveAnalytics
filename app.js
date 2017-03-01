@@ -2,20 +2,36 @@
 var express = require('express');
 var path = require('path');
 var http = require('http');
-var os = require('os');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+var mongoose = require('mongoose');
 var Influx = require('influx')
+
 var routes = require('./routes/index');
 var users = require('./routes/users');
+var trip = require('./routes/trip');
 
 var app = express();
 
 //activating database
+//influx
 var influx = new Influx.InfluxDB('http://localhost:8086/express_response_db');
+
+//mongodb
+var DBconfig = require('./config/db')
+console.log(DBconfig.url);
+mongoose.Promise = global.Promise;
+mongoose.connect(DBconfig.url);
+
+var db = mongoose.connection;
+
+db.on('error',console.error.bind(console, 'connection error:'));
+db.once('open', function(){
+  console.log('connected to db server successfully');
+});
 //end
 
 
@@ -31,27 +47,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(function (req, res, next) {
-  var start = Date.now();
-
-  res.on('finish', function () {
-    var duration = Date.now() - start;
-    console.log('Request to ' + req.path + ' took ' + duration + 'ms');
-
-    influx.writePoints([{
-      measurement: 'response_times',
-      tags: { host: os.hostname() },
-      fields: { duration: duration, path: req.path }
-    }]).catch(function (err) {
-      console.error('Error saving data to InfluxDB! ' + err.stack);
-    });
-  });
-  return next();
-});
-
-
 app.use('/', routes);
-app.use('/users', users);
+app.use('/user', users);
+app.use('/trip', trip);
 
 
 // catch 404 and forward to error handler

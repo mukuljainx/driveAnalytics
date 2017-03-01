@@ -17,7 +17,8 @@ var userSchema = mongoose.Schema({
         driverRatingPoint : Number,
         lastTripRating    : String,
         totalTrips        : Number,
-});
+        ownerId          : { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+},{timestamps : {}});
 userSchema.plugin(mongoose_csv);
 // create the model for users and expose it to our app
 module.exports = mongoose.model('User', userSchema);
