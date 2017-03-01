@@ -1,13 +1,14 @@
 var mongoose = require('mongoose');
 // var mongoose_csv = require('mongoose-csv');
 
-var tripSchema = mongoose.Schema({
+var carSchema = mongoose.Schema({
     engine       : String,
     model        : String,
     type         : String,
     age          : Number,
     manufacturer : String,
+    regNumber    : String,
 });
-userSchema.plugin(mongoose_csv);
+// userSchema.plugin(mongoose_csv);
 // create the model for users and expose it to our app
-module.exports = mongoose.model('Trip', userSchema);
+module.exports = mongoose.model('Car', carSchema);

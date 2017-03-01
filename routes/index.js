@@ -5,7 +5,7 @@ var http = require('http')
 var os = require('os')
 var express = require('express');
 var router = express.Router();
-var influx = require('../models/test.js').test;
+var influx = require('../models/tripDetail.js').model;
 
 /* GET home page. */
 router.get('/', function (req, res) {

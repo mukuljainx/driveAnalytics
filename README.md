@@ -22,6 +22,11 @@ Save per 5 second data into file then transfer to DB
 - ```influxd``` (starts the server)
 - ```influx```  (starts the CLI)
 
+## Multiple point data entry
+
+Tags followed by values | Only tags are indexed values are not
+
+- vehicle,driverId=sethia engineSpeed=3,throttle=123.9,vehicleSpeed=3 99500000000
 
 ## API
 
@@ -43,3 +48,13 @@ Save per 5 second data into file then transfer to DB
 - Starts the car
 - A request is sent to server as soon as car starts to fetch a trip ID and driver ID
 - Trip Session starts
+
+### What if drivers starts the car first then logs
+
+- If car haven't got the driver ID it will hit server again in every 5 sec to get the driver ID. [limit - 10 times]
+- A reminder to owner can be sent that his car has started.
+
+
+## How it works - solution
+
+- Connect Mobile and car using bluetooth

@@ -1,7 +1,7 @@
 'use strict';
 var Influx = require('influx');
 
-exports.test = new Influx.InfluxDB({
+exports.model = new Influx.InfluxDB({
     host: 'localhost',
     database: 'express_response_db',
     schema: [
