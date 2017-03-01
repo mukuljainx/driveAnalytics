@@ -45,21 +45,64 @@ router.get('/init', function (req, res) {
 });
 
 router.post('/list', function (req, res) {
-    Trip.find({'driverId' : driverid}, function(err, trips){
+    Trip.find({}, function(err, trips){
         if(err){
             return next(err);
         }
         else{
-            res.json(trips);
+            var data = [];
+            for(var i=0; i< trips.length; i++){
+                var temp = {
+                    "createdAt" : trips[i].createdAt,
+                    "boarding" : trips[i].boarding,
+                    "destination" : trips[i].destination,
+                    "status" : trips[i].status,
+                    "tripDriver" : trips[i].tripDriver,
+                    "averageSpeed" : trips[i].averageSpeed,
+                    "distanceCovered" : trips[i].distanceCovered,
+                    "rating" : trips[i].rating,
+                    "vehicleRegNumber" : trips[i].vehicleRegNumber,
+                    "ratingPoint" : trips[i].ratingPoint,
+                    "destinationPointx": trips[i].destinationPoint.x,
+                    "destinationPointy": trips[i].destinationPoint.y,
+                    "boardingPointx": trips[i].boardingPoint.x,
+                    "boardingPointy": trips[i]. boardingPoint.y,
+                }
+                data.push(temp);
+            }
+            res.json({ msg : data});
         }
     })
-
-
 });
 
 router.post('/detail', function (req, res) {
-    var tridId = req.query.id;
+    res.json({
+            parameter1Rating : 2,
+            parameter2Rating : 3,
+            parameter3Rating : 3,
+            parameter4Rating : 5,
+            data : [
+                {
+                    "time":"2017-03-01T18:11:33.628Z",
+                    "engineLoad":1,
+                    "engineSpeed":23,
+                    "throttle":32,
+                    "vehicleSpeed":123,
+                    "latlongx" : 1213,
+                    "latlongy" : 23423,
+                },
+                {
+                    "time":"2017-03-01T18:14:33.628Z",
+                    "engineLoad":4,
+                    "engineSpeed":223,
+                    "throttle":32,
+                    "vehicleSpeed":1323,
+                    "latlongx" : 12133,
+                    "latlongy" : 234233,
+                }
+            ]
 
+    });
 });
 
 router.post('/add', function (req, res) {
@@ -73,6 +116,33 @@ router.post('/add', function (req, res) {
         else{
             console.log(result);
             res.end('true');
+        }
+    })
+});
+
+
+router.post('/createlist', function (req, res) {
+    var trip = new Trip();
+    trip.ratingPoint      =  req.body.ratingPoint;
+    trip.vehicleRegNumber =  req.body.vehicleRegNumber;
+    trip.rating           =  req.body.rating;
+    trip.distanceCovered  =  req.body.distanceCovered;
+    trip.averageSpeed     =  req.body.averageSpeed;
+    trip.driverId         =  req.body.driverId;
+    trip.tripDriver       =  req.body.tripDriver;
+    trip.boardingPoint    =  req.body.boardingPoint;
+    trip.destinationPoint =  req.body.destinationPoint;
+    trip.status           =  req.body.status;
+    trip.destination      =  req.body.destination;
+    trip.boarding         =  req.body.boarding;
+    trip.save(function(err, result){
+        if(err){
+            // return next(err);
+            console.log(err);
+            res.end('khatam ho app');
+        }
+        else{
+            res.json({id : trip._id});
         }
     })
 });

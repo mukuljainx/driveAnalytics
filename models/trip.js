@@ -11,7 +11,7 @@ var tripSchema = mongoose.Schema({
     tripDriver      : String, // who is driving the car
     boardingPoint   : {x : Number, y : Number},
     destinationPoint: {x : Number, y : Number},
-    status          : Boolean // false means new
+    status          : Boolean, // false means new
     destination     : String,
     boarding        : String,
     // boarding        : String, extra's for speed, acc, turnng ack
