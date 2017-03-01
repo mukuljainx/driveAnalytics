@@ -9,17 +9,19 @@ driverId : String
 ```
 Return:
 ```
-ratingPoint     : Number,
-vehicleRegNumber: String,
-rating          : String,
-distanceCovered : String,
-averageSpeed    : String,
-driverId        : String
-tripDriver      : String, // who is driving the car
-boardingPoint   : {x : Number, y : Number},
-destinationPoint: {x : Number, y : Number},
-destination     : String,
-boarding        : String,
+ratingPoint       : Number,
+vehicleRegNumber  : String,
+rating            : String,
+distanceCovered   : String,
+averageSpeed      : String,
+driverId          : String
+tripDriver        : String, // who is driving the car
+boardingPointx    : Number,
+boardingPointy    : Number,
+destinationPointx : Number,
+destinationPointy : Number,
+destination       : String,
+boarding          : String,
 ```
 
 ### Trip Details
