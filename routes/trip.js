@@ -50,6 +50,7 @@ router.post('/list', function (req, res) {
             return next(err);
         }
         else{
+            console.log(trips[0]);
             var data = [];
             for(var i=0; i< trips.length; i++){
                 var temp = {
@@ -67,6 +68,7 @@ router.post('/list', function (req, res) {
                     "destinationPointy": trips[i].destinationPoint.y,
                     "boardingPointx": trips[i].boardingPoint.x,
                     "boardingPointy": trips[i]. boardingPoint.y,
+                    "tripId": trips[i]. boardingPoint.y_id,
                 }
                 data.push(temp);
             }
@@ -78,6 +80,7 @@ router.post('/list', function (req, res) {
 router.post('/detail', function (req, res) {
     if(!req.body.tripId){
         res.json({msg : "Trip ID Missing", status : false});
+        return;
     }
     var tripId = req.body.tripId;
 
@@ -91,7 +94,7 @@ router.post('/detail', function (req, res) {
                 averageSpeed : 43.5,
                 distanceCovered : 22.30,
                 timeTaken : 30.75, // in minutes
-            }
+            },
             status : true,
     });
 });
