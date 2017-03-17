@@ -67,8 +67,8 @@ router.post('/list', function (req, res) {
                     "destinationPointx": trips[i].destinationPoint.x,
                     "destinationPointy": trips[i].destinationPoint.y,
                     "boardingPointx": trips[i].boardingPoint.x,
-                    "boardingPointy": trips[i]. boardingPoint.y,
-                    "tripId": trips[i]. boardingPoint.y_id,
+                    "boardingPointy": trips[i].boardingPoint.y,
+                    "tripId": trips[i]._id,
                 }
                 data.push(temp);
             }
