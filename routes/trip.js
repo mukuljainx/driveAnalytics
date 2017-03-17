@@ -76,32 +76,23 @@ router.post('/list', function (req, res) {
 });
 
 router.post('/detail', function (req, res) {
-    res.json({
-            parameter1Rating : 2,
-            parameter2Rating : 3,
-            parameter3Rating : 3,
-            parameter4Rating : 5,
-            data : [
-                {
-                    "time":"2017-03-01T18:11:33.628Z",
-                    "engineLoad":1,
-                    "engineSpeed":23,
-                    "throttle":32,
-                    "vehicleSpeed":123,
-                    "latlongx" : 1213,
-                    "latlongy" : 23423,
-                },
-                {
-                    "time":"2017-03-01T18:14:33.628Z",
-                    "engineLoad":4,
-                    "engineSpeed":223,
-                    "throttle":32,
-                    "vehicleSpeed":1323,
-                    "latlongx" : 12133,
-                    "latlongy" : 234233,
-                }
-            ]
+    if(!req.body.tripId){
+        res.json({msg : "Trip ID Missing", status : false});
+    }
+    var tripId = req.body.tripId;
 
+    //will search in influxDB on the basis of ID
+    res.json({
+            msg : {
+                parameter1Rating : 2,
+                parameter2Rating : 3,
+                parameter3Rating : 3,
+                parameter4Rating : 5,
+                averageSpeed : 43.5,
+                distanceCovered : 22.30,
+                timeTaken : 30.75, // in minutes
+            }
+            status : true,
     });
 });
 

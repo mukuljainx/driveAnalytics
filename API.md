@@ -9,19 +9,24 @@ driverId : String
 ```
 Return:
 ```
-ratingPoint       : Number,
-vehicleRegNumber  : String,
-rating            : String,
-distanceCovered   : String,
-averageSpeed      : String,
-driverId          : String
-tripDriver        : String, // who is driving the car
-boardingPointx    : Number,
-boardingPointy    : Number,
-destinationPointx : Number,
-destinationPointy : Number,
-destination       : String,
-boarding          : String,
+{
+    msg :
+        {
+            ratingPoint       : Number,
+            vehicleRegNumber  : String,
+            rating            : String,
+            distanceCovered   : String,
+            averageSpeed      : String,
+            driverId          : String
+            tripDriver        : String, // who is driving the car
+            boardingPointx    : Number,
+            boardingPointy    : Number,
+            destinationPointx : Number,
+            destinationPointy : Number,
+            destination       : String,
+            boarding          : String,
+        }
+}
 ```
 
 ### Trip Details
@@ -34,20 +39,15 @@ tripId : String
 Return:
 ```
 {
-    parameter1Rating : Number,
-    parameter2Rating : Number,
-    parameter3Rating : Number,
-    parameter4Rating : Number,
-    [
-        {
-            "time":String,
-            "engineLoad":Number,
-            "engineSpeed":Number,
-            "throttle":Number,
-            "vehicleSpeed":Number,
-            "latlongx" : Number,
-            "latlongy" : Number,
-        },...
-    ]
+    msg : {
+        parameter1Rating : 2,
+        parameter2Rating : 3,
+        parameter3Rating : 3,
+        parameter4Rating : 5,
+        averageSpeed : 43.5,
+        distanceCovered : 22.30,
+        timeTaken : 30.75, // in minutes
+    }
+    status : true,
 }
 ```
