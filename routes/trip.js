@@ -86,15 +86,13 @@ router.post('/detail', function (req, res) {
 
     //will search in influxDB on the basis of ID
     res.json({
-            msg : {
-                parameter1Rating : 2,
-                parameter2Rating : 3,
-                parameter3Rating : 3,
-                parameter4Rating : 5,
-                averageSpeed : 43.5,
-                distanceCovered : 22.30,
-                timeTaken : 30.75, // in minutes
-            },
+            parameter1Rating : 2,
+            parameter2Rating : 3,
+            parameter3Rating : 3,
+            parameter4Rating : 5,
+            averageSpeed : 43.5,
+            distanceCovered : 22.30,
+            timeTaken : 30.75, // in minutes
             status : true,
     });
 });
