@@ -15,7 +15,7 @@ exports.model = new Influx.InfluxDB({
                 latlongx : Influx.FieldType.FLOAT,
                 latlongy : Influx.FieldType.FLOAT,
             },
-            tags: ['host']
+            tags: ['driverId','tripId']
         },
     ]
 });

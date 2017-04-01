@@ -24,9 +24,9 @@ Save per 5 second data into file then transfer to DB
 
 ## Multiple point data entry
 
-Tags followed by values | Only tags are indexed values are not
+Tags followed by values followed by ts | **Only tags are indexed values are not**
 
-- vehicle,driverId=sethia engineSpeed=3,throttle=123.9,vehicleSpeed=3 99500000000
+- vehicle,driverId=sethia,tripId=123 engineSpeed=3,throttle=123.9,vehicleSpeed=3 99500000000
 
 ## API
 
@@ -41,6 +41,10 @@ Tags followed by values | Only tags are indexed values are not
 - Individual trips [ all details - speed, load, lat long per second]
 - car [car details]
 
+## Sending Data from Sensor
+
+Through API in some time interval as given in [Official Doc](
+https://www.influxdata.com/how-to-create-iot-influxdb-google-cloud-platform-part-4/).
 
 ## How it works (tentative)
 
@@ -58,3 +62,12 @@ Tags followed by values | Only tags are indexed values are not
 ## How it works - solution
 
 - Connect Mobile and car using bluetooth
+- When car starts user should connect his mobile using bluetooth before starts
+- Car Audio system (if available) will alert him to connect if he is not.
+- If he forgets to connect trip will registered in the name of the owner, Later on Owner can change the driver by creating a request which driver have to accept to get registered for that trio.
+- Car will know the driver ID if he is connected if not then car will assume owner as the driver.
+
+## Note
+Once after training model, we can tell how driver is driving at every point.
+
+[Pyhton - NodeJS custom connect](http://www.sohamkamani.com/blog/2015/08/21/python-nodejs-comm/)

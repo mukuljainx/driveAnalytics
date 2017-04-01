@@ -1,1 +1,4 @@
-vehicle,id=sethia engineSpeed=3,throttle=123.9,vehicleSpeed=3 99500000000
+vehiclex1,driverId=james,tripId=123 engineSpeed=1,throttle=1.9,vehicleSpeed=11 99500000000
+vehiclex1,driverId=james,tripId=123 engineSpeed=2,throttle=2.9,vehicleSpeed=22 99600000000
+vehiclex1,driverId=james,tripId=123 engineSpeed=3,throttle=3.9,vehicleSpeed=33 99700000000
+vehiclex1,driverId=james,tripId=123 engineSpeed=4,throttle=4.9,vehicleSpeed=44 99800000000

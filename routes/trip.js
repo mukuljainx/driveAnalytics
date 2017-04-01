@@ -4,44 +4,42 @@ var express = require('express');
 var router = express.Router();
 var Trip = require('../models/trip');
 
-/* GET home page. */
 router.get('/init', function (req, res) {
 
     var carRegNum = req.query.regNumber;
+    var driverId  = req.query.driverId;
 
-    var createTrip = function(){
-        // to be used if this car is using service for the first time
-        Car.findOne({'regNumber' : carRegNum}, function(err, car){
+    //driver connects the phone with car then click on init trip
+    // or if the phone is connected to the internet and car this will be automatically hit
+    // after 1 minute of car driving with activating this
+
+    Car.findOne({'regNumber' : carRegNum}, function(err, car){
+        if(car){
             var carOwner = car.owner;
             var trip = new Trip();
             trip.vehicleRegNumber = req.query.regNumber;
             trip.boardingPoint = {x : req.query.x, y : req.query.y};
-            trip.tripDriver = "unknown";
+            trip.tripDriver = driverId;
+            trip.destinationEntered = req.query.destinationEntered;
+            trip.status = true;
             trip.save(function(err, result){
                 if(err){
                     return next(err);
                 }
                 else{
-                    res.json({id : trip._id});
+                    res.json({id : trip._id}); //id with which data will be logged in influxdb
                 }
             })
-        })
-    }
-
-    Trip.findOne({'vehicleRegNumber' : carRegNum}).sort({'createdAt' : -1}).exec(function(err, tripDoc){
-        if(err){
+        }
+        else if(!car){
+            // TODO: if car is not there ask user to add the car with all required details
+            // Car will always be there as we installs the hardware we registers the car
+        }
+        else if(err){
             return next(err);
         }
-        else if(!tripDoc){
-            createTrip();
-            //TODO: Alter the owner about unidentified trip
-        }
-        else if(tripDoc){
-            if(!tripDoc.status){
-                res.json(tripDoc);
-            }
-        }
     })
+
 });
 
 router.post('/list', function (req, res) {
@@ -131,13 +129,16 @@ router.post('/createlist', function (req, res) {
         if(err){
             // return next(err);
             console.log(err);
-            res.end('khatam ho app');
+            res.end(err);
         }
         else{
             res.json({id : trip._id});
         }
     })
 });
+
+
+
 
 
 module.exports = router;
