@@ -1,0 +1,22 @@
+{
+  "name": "driveAnalytics",
+  "description": "",
+  "main": "",
+  "authors": [
+    "Mukul Jain <jainmukul1996@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/jainmukul/driveAnalytics",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "socket.io": "^1.7.3",
+    "socket.io-client": "^1.7.2"
+  }
+}

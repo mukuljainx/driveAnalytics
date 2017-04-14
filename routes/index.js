@@ -1,12 +1,13 @@
 'use strict'
 
-var Influx = require('influx')
-var http = require('http')
+var Influx = require('influx');
+var http = require('http');
 var express = require('express');
 var router = express.Router();
 var influx = require('../models/tripDetail.js').model;
 var json2csv = require('json2csv');
 var fs = require('fs');
+var io = require('socket.io')(http);
 
 /* GET home page. */
 router.get('/', function (req, res) {
@@ -14,7 +15,6 @@ router.get('/', function (req, res) {
         return res.end('Hello world!');
     }, Math.random() * 500);
 });
-
 
 router.get('/times', function (req, res) {
     var x = "123"; // temporary
@@ -32,5 +32,11 @@ router.get('/times', function (req, res) {
         res.status(500).send(err.stack);
     });
 });
+
+
+router.get('/socket', function (req, res) {
+    res.render('socket', {});
+});
+
 
 module.exports = router;

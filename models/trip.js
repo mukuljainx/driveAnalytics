@@ -15,6 +15,8 @@ var tripSchema = mongoose.Schema({
     destinationEntered : String,
     destinationLocated : String,
     boarding        : String,
+    startTime       : Date,
+    endTime         : Date,
     // boarding        : String, extra's for speed, acc, turnng ack
     // boarding        : String,
     // boarding        : String,

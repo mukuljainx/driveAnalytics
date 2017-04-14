@@ -3,6 +3,9 @@
 var express = require('express');
 var router = express.Router();
 var Trip = require('../models/trip');
+var influxTripDetail = require('../models/tripDetail.js').model;
+var json2csv = require('json2csv'); //to convert influx json to csv for ML part
+var fs = require('fs');
 
 router.get('/init', function (req, res) {
 
@@ -22,6 +25,7 @@ router.get('/init', function (req, res) {
             trip.tripDriver = driverId;
             trip.destinationEntered = req.query.destinationEntered;
             trip.status = true;
+            trip.startTime = new Date();
             trip.save(function(err, result){
                 if(err){
                     return next(err);
@@ -133,6 +137,52 @@ router.post('/createlist', function (req, res) {
         }
         else{
             res.json({id : trip._id});
+        }
+    })
+});
+
+router.get('/end', function (req, res) {
+    var spawn = require('child_process').spawn; // for python process
+    var tripId = req.body.tripId;
+    var update = {
+            destinationPoint : req.body.destinationPoint,
+            endTime : new Date(),
+    };
+
+
+    Trip.findOneAndUpdate({'_id' : tripId}, {$set : update}, {'new': true},function (err, trip) {
+        if(err){
+            return next(err);
+        }
+        else{
+            var fields = ['time', 'driverId', 'engineSpeed', 'throttle', 'tripId', 'vehicleSpeed'];
+            influx.query(`select * from vehiclex1 where tripId = ${Influx.escape.stringLit(x)}`).then(function (result) {
+                // res.json(result);
+                var csv = json2csv({ data: result, fields: fields });
+                fs.writeFile('file.csv', csv, function(err) {
+                    if (err) return next(err);
+                    // console.log('file saved');
+                    // res.json(result);
+                    var py    = spawn('python3', ['compute_input.py']),
+                        data = [1,2,3,4,5,6,7,8,9],
+                        dataString = '';
+
+                    // we are dumping our data to a python process
+                    py.stdin.write(JSON.stringify(data));
+                    py.stdin.end();
+
+                    py.stdout.on('data', function(data){
+                        // this `data` is from python process
+                        dataString += data.toString();
+                    });
+                    py.stdout.on('end', function(){
+                        console.log('Sum of numbers=',dataString);
+                        res.end(dataString);
+                    });
+                });
+            }).catch(function (err) {
+                res.status(500).send(err.stack);
+            });
         }
     })
 });

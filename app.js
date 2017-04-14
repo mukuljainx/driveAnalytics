@@ -1,5 +1,6 @@
 'use strict'
 var express = require('express');
+var socket_io = require( "socket.io" );
 var path = require('path');
 var http = require('http');
 var favicon = require('serve-favicon');
@@ -15,6 +16,14 @@ var users = require('./routes/users');
 var trip = require('./routes/trip');
 
 var app = express();
+
+var io           = socket_io();
+app.io           = io;
+
+io.on('connection', function(socket){
+    console.log('a user connected');
+    // res.end('1')
+});
 
 //activating database
 //influx
@@ -47,6 +56,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/bower_components', express.static(path.join(__dirname, 'bower_components')))
 
 app.use('/', routes);
 app.use('/user', users);
@@ -83,5 +93,6 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
+
 
 module.exports = app;
