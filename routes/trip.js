@@ -15,24 +15,30 @@ router.get('/init', function (req, res) {
     //driver connects the phone with car then click on init trip
     // or if the phone is connected to the internet and car this will be automatically hit
     // after 1 minute of car driving with activating this
-
-    Car.findOne({'regNumber' : carRegNum}, function(err, car){
+    carUpdate = {
+        status : true,
+        currentDriver : driverId
+    }
+    Car.findOneAndUpdate({'regNumber' : carRegNum}, {$set : carUpdate}, {'new': true},function(err, car){
         if(car){
-            var carOwner = car.owner;
-            var trip = new Trip();
-            trip.vehicleRegNumber = req.query.regNumber;
-            trip.boardingPoint = {x : req.query.x, y : req.query.y};
-            trip.tripDriver = driverId;
-            trip.destinationEntered = req.query.destinationEntered;
-            trip.status = true;
-            trip.startTime = new Date();
-            trip.save(function(err, result){
-                if(err){
-                    return next(err);
-                }
-                else{
-                    res.json({id : trip._id}); //id with which data will be logged in influxdb
-                }
+            Trip.count(function(err,tripCount){
+                var carOwner = car.owner;
+                var trip = new Trip();
+                trip.vehicleRegNumber = req.query.regNumber;
+                trip.boardingPoint = {x : req.query.x, y : req.query.y};
+                trip.tripDriver = driverId;
+                trip.destinationEntered = req.query.destinationEntered;
+                trip.status = true;
+                trip.startTime = new Date();
+                trip.tripId = "trip-" + (tripCount + 1);
+                trip.save(function(err, result){
+                    if(err){
+                        return next(err);
+                    }
+                    else{
+                        res.json({id : trip._id}); //id with which data will be logged in influxdb
+                    }
+                })
             })
         }
         else if(!car){
@@ -86,17 +92,15 @@ router.post('/detail', function (req, res) {
     }
     var tripId = req.body.tripId;
 
-    //will search in influxDB on the basis of ID
-    res.json({
-            parameter1Rating : 2,
-            parameter2Rating : 3,
-            parameter3Rating : 3,
-            parameter4Rating : 5,
-            averageSpeed : 43.5,
-            distanceCovered : 22.30,
-            timeTaken : 30.75, // in minutes
-            status : true,
-    });
+    //will search in mongoDB on the basis of ID
+    Trip.findOne({'tripId' : tripId}, function(err, trip){
+        if(err){
+            return next(err);
+        }
+        else if(trip){
+            res.json(trip);
+        }
+    })
 });
 
 router.post('/add', function (req, res) {
@@ -149,42 +153,53 @@ router.get('/end', function (req, res) {
             endTime : new Date(),
     };
 
+    var fields = ['time', 'driverId', 'engineSpeed', 'throttle', 'tripId', 'vehicleSpeed'];
+    influx.query(`select * from vehiclex1 where tripId = ${Influx.escape.stringLit(x)}`).then(function (result) {
+        // res.json(result);
+        var csv = json2csv({ data: result, fields: fields });
+        fs.writeFile('file.csv', csv, function(err) {
+            if (err) return next(err);
+            // console.log('file saved');
+            // res.json(result);
+            var py    = spawn('python3', ['compute_input.py']),
+                data = [1,2,3,4,5,6,7,8,9],
+                dataString = '';
 
-    Trip.findOneAndUpdate({'_id' : tripId}, {$set : update}, {'new': true},function (err, trip) {
-        if(err){
-            return next(err);
-        }
-        else{
-            var fields = ['time', 'driverId', 'engineSpeed', 'throttle', 'tripId', 'vehicleSpeed'];
-            influx.query(`select * from vehiclex1 where tripId = ${Influx.escape.stringLit(x)}`).then(function (result) {
-                // res.json(result);
-                var csv = json2csv({ data: result, fields: fields });
-                fs.writeFile('file.csv', csv, function(err) {
-                    if (err) return next(err);
-                    // console.log('file saved');
-                    // res.json(result);
-                    var py    = spawn('python3', ['compute_input.py']),
-                        data = [1,2,3,4,5,6,7,8,9],
-                        dataString = '';
+            // we are dumping our data to a python process
+            py.stdin.write(JSON.stringify(data));
+            py.stdin.end();
 
-                    // we are dumping our data to a python process
-                    py.stdin.write(JSON.stringify(data));
-                    py.stdin.end();
-
-                    py.stdout.on('data', function(data){
-                        // this `data` is from python process
-                        dataString += data.toString();
-                    });
-                    py.stdout.on('end', function(){
-                        console.log('Sum of numbers=',dataString);
-                        res.end(dataString);
-                    });
-                });
-            }).catch(function (err) {
-                res.status(500).send(err.stack);
+            py.stdout.on('data', function(data){
+                // this `data` is from python process
+                dataString += data.toString();
             });
-        }
-    })
+            py.stdout.on('end', function(){
+                console.log('Sum of numbers=',dataString);
+                //store result in db also send user the results
+                tripUpdate = {
+                    ratingPoint  : 9,
+                    turnings     : 65,
+                    laneWeaving  : 75,
+                    laneDrifting : 85,
+                    overSpeeding : 95,
+                    carFollowing : 90,
+                    normal       : 0.7,
+                    drowsy       : 0.3,
+                    aggressive   : 0.5
+                    //7 paramerter + ratingPoint
+                }
+                Trip.findOneAndUpdate({'tripId' : tripId}, {$set : tripUpdate}, {'new': true},function (err, trip) {
+                    if(err) return next(err);
+                    else if(trip){
+                        //sending the updated data to user
+                        res.json(trip)
+                    }
+                })
+            });
+        });
+    }).catch(function (err) {
+        res.status(500).send(err.stack);
+    });
 });
 
 

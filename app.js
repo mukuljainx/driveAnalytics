@@ -14,6 +14,7 @@ var Influx = require('influx')
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var trip = require('./routes/trip');
+var car = require('./routes/car');
 
 var app = express();
 
@@ -60,6 +61,7 @@ app.use('/bower_components', express.static(path.join(__dirname, 'bower_componen
 
 app.use('/', routes);
 app.use('/user', users);
+app.use('/car', car);
 app.use('/trip', trip);
 
 

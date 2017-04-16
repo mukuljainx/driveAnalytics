@@ -4,8 +4,6 @@ var mongoose = require('mongoose');
 var userSchema = mongoose.Schema({
         googletoken       : String,
         googleid          : String,
-        facebooktoken     : String,
-        facebookid        : String,
         email             : String,
         name              : String,
         phoneNumber       : Number,
@@ -17,8 +15,9 @@ var userSchema = mongoose.Schema({
         driverRatingPoint : Number,
         lastTripRating    : String,
         totalTrips        : Number,
-        ownerId          : { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+        cars              : Array,
+        driverId          : String,
 },{timestamps : {}});
-userSchema.plugin(mongoose_csv);
+// userSchema.plugin(mongoose_csv);
 // create the model for users and expose it to our app
 module.exports = mongoose.model('User', userSchema);
