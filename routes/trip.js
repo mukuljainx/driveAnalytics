@@ -33,8 +33,7 @@ router.post('/init', function (req, res, next) {
                 var carOwner = car.owner;
                 var trip = new Trip();
                 trip.vehicleRegNumber = req.body.vehicleRegNumber;
-                trip.boardingPoint.x = req.body.x;
-                trip.boardingPoint.y = req.body.y;
+                trip.boardingPoint = { x :req.body.x, y : req.body.y};
                 trip.boarding = req.body.boarding;
                 trip.driverId = driverId;
                 trip.destinationEntered = req.body.destinationEntered;
@@ -96,7 +95,7 @@ router.post('/list', function (req, res) {
                     "destinationPointy": trips[i].destinationPoint.y,
                     "boardingPointx": trips[i].boardingPoint.x,
                     "boardingPointy": trips[i].boardingPoint.y,
-                    "tripId": trips[i]._id,
+                    "tripId": trips[i].tripId,
                 }
                 data.push(temp);
             }
@@ -211,6 +210,7 @@ router.post('/end', function (req, res) {
                 console.log('Sum of numbers=',dataString);
                 //store result in db also send user the results
                 var tripUpdate = {
+                    //7 paramerter + ratingPoint
                     ratingPoint  : 9,
                     turnings     : 65,
                     laneWeaving  : 75,
@@ -219,18 +219,24 @@ router.post('/end', function (req, res) {
                     carFollowing : 90,
                     normal       : 0.7,
                     drowsy       : 0.3,
-                    aggressive   : 0.5
-                    //7 paramerter + ratingPoint
+                    aggressive   : 0.5,
+                    destinationPoint : {x :req.body.x, y : req.body.y},
+                    destinationLocated : req.body.destination
                 }
                 Trip.findOneAndUpdate({'tripId' : tripId}, {$set : tripUpdate}, {'new': true},function (err, trip) {
-                    if(err) return next(err);
-                    else if(trip){
+                    if(trip){
                         trip.status = true;
+                        trip.msg = "200";
+                        trip.boardingPointx = trip.boardingPoint.x;
+                        trip.boardingPointy = trip.boardingPoint.y;
+                        trip.destinationPointx = trip.destinationPoint.x;
+                        trip.destinationPointy = trip.destinationPoint.y;
                         res.json(trip)
                     }
-                    else{
-                        res.end({status : false, msg : "trip not found!"});
+                    else if(!trip){
+                        res.json({status : false, msg : "trip not found!"});
                     }
+                    else if(err) return next(err);
                 })
             });
         });
@@ -242,7 +248,7 @@ router.post('/end', function (req, res) {
 
 
 
-router.post('/alive', function (req, res) {
+router.post('/data', function (req, res) {
     var driverId = req.body.driverId;
     var position = tripUserQueuePosition.driverId;
     clearTimeout(tripUserQueue[position]);

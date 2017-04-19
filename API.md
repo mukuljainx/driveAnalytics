@@ -27,8 +27,6 @@ endpoint : ```/trip/end```
 reqBody :
 ```
 {
-    driverId           : String,
-    regNumber          : String,
     x                  : Number,
     y                  : Number,
     destination        : String, (location obtained from geo points)
@@ -113,8 +111,10 @@ Return:
     averageSpeed       : String,
     driverId           : { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // if driver is known
     tripDriver         : String, // who is driving the car
-    boardingPoint      : {x : Number, y : Number},
-    destinationPoint   : {x : Number, y : Number},
+    boardingPointx     : Number,
+    boardingPointy     : Number,
+    destinationPointx  : Number,
+    destinationPointy  : Number,
     status             : Boolean, // false means new, not used
     destinationEntered : String,
     destinationLocated : String,
