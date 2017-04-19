@@ -17,7 +17,8 @@ router.post('/init', function (req, res, next) {
     var driverId  = req.body.driverId;
 
     if(!vehicleRegNumber || !driverId || !req.body.x || !req.body.y || !req.body.boarding || !req.body.destinationEntered){
-        res.end({status : false, msg : "something missing!"});
+        res.json({status : false, msg : "something missing!"});
+        return;
     }
 
     //driver connects the phone with car then click on init trip
@@ -53,7 +54,6 @@ router.post('/init', function (req, res, next) {
 
                         tripUserQueuePosition[driverId] = tripUserQueue.length;
                         tripUserQueue.push(timeoutFunction);
-                        console.log(tripUserQueuePosition);
                         res.json({id : trip.tripId}); //id with which data will be logged in influxdb
                     }
                 })
@@ -211,6 +211,8 @@ router.post('/end', function (req, res) {
                 //store result in db also send user the results
                 var tripUpdate = {
                     //7 paramerter + ratingPoint
+                    averageSpeed : 55,
+                    distanceCovered : 235,
                     ratingPoint  : 9,
                     turnings     : 65,
                     laneWeaving  : 75,
@@ -227,11 +229,11 @@ router.post('/end', function (req, res) {
                     if(trip){
                         trip.status = true;
                         trip.msg = "200";
-                        trip.boardingPointx = trip.boardingPoint.x;
-                        trip.boardingPointy = trip.boardingPoint.y;
-                        trip.destinationPointx = trip.destinationPoint.x;
-                        trip.destinationPointy = trip.destinationPoint.y;
-                        res.json(trip)
+                        // trip.boardingPointx = trip.boardingPoint.x;
+                        // trip.boardingPointy = trip.boardingPoint.y;
+                        // trip.destinationPointx = trip.destinationPoint.x;
+                        // trip.destinationPointy = trip.destinationPoint.y;
+                        res.json(trip);
                     }
                     else if(!trip){
                         res.json({status : false, msg : "trip not found!"});

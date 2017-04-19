@@ -7,7 +7,7 @@ reqBody :
 ```
 {
     driverId           : String,
-    regNumber          : String,
+    vehicleRegNumber   : String,
     x                  : Number,
     y                  : Number,
     boarding           : String,
