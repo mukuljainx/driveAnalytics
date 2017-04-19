@@ -2,14 +2,13 @@ var mongoose = require('mongoose');
 // var mongoose_csv = require('mongoose-csv');
 
 var tripSchema = mongoose.Schema({
-    tripId          : Number,
+    tripId          : String,
     ratingPoint     : Number,
     vehicleRegNumber: String,
     rating          : String,
     distanceCovered : String,
     averageSpeed    : String,
-    driverId        : { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // if driver is known
-    tripDriver      : String, // who is driving the car
+    driverId        : String, // who is driving the car
     boardingPoint   : {x : Number, y : Number},
     destinationPoint: {x : Number, y : Number},
     status          : Boolean, // false means new, not used

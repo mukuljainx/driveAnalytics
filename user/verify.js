@@ -9,7 +9,6 @@ exports.getToken = function (user) {
       iss: 'https://plinth.in',
       permissions: 'event-registration'
     }
-
     var jwt = nJwt.create(claims,config.secretKey);
     jwt.setExpiration(new Date('2017-06-31'));
 

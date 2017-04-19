@@ -67,7 +67,7 @@ router.post('/user_register_complete', Verify.verifyOrdinaryUser ,function(req, 
         var update = {
             phoneNumber       : req.body.phoneNumber,
             country           : req.body.country,
-            year              : req.body.year,
+            dateOfBirth       : req.body.dateOfBirth,
             city              : req.body.city,
             gender            : req.body.gender,
             valid             : true,
@@ -76,15 +76,19 @@ router.post('/user_register_complete', Verify.verifyOrdinaryUser ,function(req, 
             driverRating      : "No Rating Yet",
             driverRatingPoint : -1,
             lastTripRating    : -1,
-            driverId          : count + 1,
+            driverId          : "driver-" + count,
         };
-        User.findOneAndUpdate({'email' : req.decoded.sub}, update, {new: true}, function(err, user) {
+        // User.findOneAndUpdate({'email' : req.decoded.sub}, update, {new: true}, function(err, user) {
+        User.findOneAndUpdate({'email' : req.body.email}, update, {new: true}, function(err, user) {
             if (err){
                 return next(err);
             }
-            if (user) {
+            else if (user) {
                 res.cookie('access-token', Verify.getToken(user),{ httpOnly: true, secure : false });
                 res.json({"response" : true});
+            }
+            else{
+                res.json({"response" : false, "msg" : "User not found"});
             }
         });
     })
@@ -128,7 +132,7 @@ router.post('/user_register_complete_mobile/google',function(req, res) {
                               var user = new User();
                               user.phoneNumber       = req.body.phoneNumber;
                               user.country           = req.body.country;
-                              user.year              = req.body.year;
+                              user.dateOfBirth       = req.body.dateOfBirth;
                               user.city              = req.body.city;
                               user.gender            = req.body.gender;
                               user.name              = req.body.name;
@@ -183,7 +187,7 @@ router.post('/user_validate_mobile/google',function(req, res) {
                           msg : "true",
                           phoneNumber  : user.phoneNumber,
                           country  : user.country,
-                          year  : user.year,
+                          dateOfBirth  : user.dateOfBirth,
                           city  : user.city,
                           gender  : user.gender,
                           name  : user.name,

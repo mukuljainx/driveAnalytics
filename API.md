@@ -1,5 +1,68 @@
 # API's
 
+### Initiate trip
+Type : Post  
+endpoint : ```/trip/init```  
+reqBody :
+```
+{
+    driverId           : String,
+    regNumber          : String,
+    x                  : Number,
+    y                  : Number,
+    boarding           : String,
+    destinationEntered : String
+}
+```
+Return:
+```
+{
+    tripId : String
+}
+```
+
+### end trip
+Type : Post  
+endpoint : ```/trip/end```  
+reqBody :
+```
+{
+    driverId           : String,
+    regNumber          : String,
+    x                  : Number,
+    y                  : Number,
+    destination        : String, (location obtained from geo points)
+}
+```
+Return:
+```
+{
+    tripId          : String,
+    ratingPoint     : Number,
+    vehicleRegNumber: String,
+    rating          : String,
+    distanceCovered : String,
+    averageSpeed    : String,
+    driverId        : String, // who is driving the car
+    boardingPoint   : {x : Number, y : Number},
+    destinationPoint: {x : Number, y : Number},
+    status          : Boolean, // false means new, not used
+    destinationEntered : String,
+    destinationLocated : String,
+    boarding        : String,
+    startTime       : Date,
+    endTime         : Date,
+    turnings        : Number, //score (base 100)
+    laneWeaving     : Number, //score (base 100)
+    laneDrifting    : Number, //score (base 100)
+    overSpeeding    : Number, //score (base 100)
+    carFollowing    : Number, //score (base 100)
+    normal          : Number, //ratio (driver condition)
+    drowsy          : Number, //ratio (driver condition)
+    aggressive      : Number //ratio (driver condition)
+}
+```
+
 ### All trip list
 Type : Post  
 endpoint : ```/trip/list```  

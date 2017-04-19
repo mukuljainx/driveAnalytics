@@ -7,6 +7,7 @@ var userSchema = mongoose.Schema({
         email             : String,
         name              : String,
         phoneNumber       : Number,
+        dateOfBirth       : Date,     
         city              : String,
         country           : String,
         valid             : Boolean,

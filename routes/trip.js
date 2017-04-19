@@ -1,21 +1,25 @@
 'use strict'
 
 var express = require('express');
+var Influx = require('influx');
 var router = express.Router();
 var Trip = require('../models/trip');
+var Car = require('../models/car');
+var tripUserQueue = [];
+var tripUserQueuePosition = {};
 var influxTripDetail = require('../models/tripDetail.js').model;
 var json2csv = require('json2csv'); //to convert influx json to csv for ML part
 var fs = require('fs');
 
-router.get('/init', function (req, res) {
+router.post('/init', function (req, res, next) {
 
-    var carRegNum = req.query.regNumber;
-    var driverId  = req.query.driverId;
+    var carRegNum = req.body.regNumber;
+    var driverId  = req.body.driverId;
 
     //driver connects the phone with car then click on init trip
     // or if the phone is connected to the internet and car this will be automatically hit
     // after 1 minute of car driving with activating this
-    carUpdate = {
+    var carUpdate = {
         status : true,
         currentDriver : driverId
     }
@@ -24,19 +28,29 @@ router.get('/init', function (req, res) {
             Trip.count(function(err,tripCount){
                 var carOwner = car.owner;
                 var trip = new Trip();
-                trip.vehicleRegNumber = req.query.regNumber;
-                trip.boardingPoint = {x : req.query.x, y : req.query.y};
-                trip.tripDriver = driverId;
-                trip.destinationEntered = req.query.destinationEntered;
+                trip.vehicleRegNumber = req.body.regNumber;
+                trip.boardingPoint = {x : req.body.x, y : req.body.y};
+                trip.boarding = req.body.boarding;
+                trip.driverId = driverId;
+                trip.destinationEntered = req.body.destinationEntered;
                 trip.status = true;
                 trip.startTime = new Date();
                 trip.tripId = "trip-" + (tripCount + 1);
-                trip.save(function(err, result){
+                trip.save(function(err){
                     if(err){
-                        return next(err);
+                        next(err);
                     }
                     else{
-                        res.json({id : trip._id}); //id with which data will be logged in influxdb
+                        //adding new user to the queue
+                        var timeoutFunction = setTimeout(function () {
+                            //alert member
+                            console.log(1,'15 minutes ' + driverId);
+                        },5000); //15 minutes = 900000
+
+                        tripUserQueuePosition[driverId] = tripUserQueue.length;
+                        tripUserQueue.push(timeoutFunction);
+                        console.log(tripUserQueuePosition);
+                        res.json({id : trip.tripId}); //id with which data will be logged in influxdb
                     }
                 })
             })
@@ -66,7 +80,7 @@ router.post('/list', function (req, res) {
                     "boarding" : trips[i].boarding,
                     "destination" : trips[i].destination,
                     "status" : trips[i].status,
-                    "tripDriver" : trips[i].tripDriver,
+                    "driverId" : trips[i].driverId,
                     "averageSpeed" : trips[i].averageSpeed,
                     "distanceCovered" : trips[i].distanceCovered,
                     "rating" : trips[i].rating,
@@ -106,7 +120,7 @@ router.post('/detail', function (req, res) {
 router.post('/add', function (req, res) {
     var trip = new Trip();
     trip.tripId = 123;
-    trip.save(function(err, result){
+    trip.save(function(err){
         if(err){
             // TODO: handle err
             console.log(err);
@@ -118,7 +132,6 @@ router.post('/add', function (req, res) {
     })
 });
 
-
 router.post('/createlist', function (req, res) {
     var trip = new Trip();
     trip.ratingPoint      =  req.body.ratingPoint;
@@ -127,13 +140,12 @@ router.post('/createlist', function (req, res) {
     trip.distanceCovered  =  req.body.distanceCovered;
     trip.averageSpeed     =  req.body.averageSpeed;
     trip.driverId         =  req.body.driverId;
-    trip.tripDriver       =  req.body.tripDriver;
     trip.boardingPoint    =  req.body.boardingPoint;
     trip.destinationPoint =  req.body.destinationPoint;
     trip.status           =  req.body.status;
     trip.destination      =  req.body.destination;
     trip.boarding         =  req.body.boarding;
-    trip.save(function(err, result){
+    trip.save(function(err){
         if(err){
             // return next(err);
             console.log(err);
@@ -145,16 +157,32 @@ router.post('/createlist', function (req, res) {
     })
 });
 
-router.get('/end', function (req, res) {
+router.post('/end', function (req, res) {
+
+    var driverId = req.body.driverId;
+
+
+    var position = tripUserQueuePosition[driverId];
+    // tripUserQueuePosition.driverId.status = false;
+    clearTimeout(tripUserQueue[position]);
+    tripUserQueue.splice(position,1);
+
+    for(var key in tripUserQueuePosition){
+        if(tripUserQueuePosition.key > position){
+            tripUserQueuePosition.key = (tripUserQueuePosition.key - 1);
+        }
+    }
+
     var spawn = require('child_process').spawn; // for python process
     var tripId = req.body.tripId;
+    // if(!tripId) res.json({status : false, msg : "tripId is not provided"});
     var update = {
             destinationPoint : req.body.destinationPoint,
             endTime : new Date(),
     };
-
+    var x = "123";
     var fields = ['time', 'driverId', 'engineSpeed', 'throttle', 'tripId', 'vehicleSpeed'];
-    influx.query(`select * from vehiclex1 where tripId = ${Influx.escape.stringLit(x)}`).then(function (result) {
+    influxTripDetail.query(`select * from vehiclex1 where tripId = ${Influx.escape.stringLit(x)}`).then(function (result) {
         // res.json(result);
         var csv = json2csv({ data: result, fields: fields });
         fs.writeFile('file.csv', csv, function(err) {
@@ -176,7 +204,7 @@ router.get('/end', function (req, res) {
             py.stdout.on('end', function(){
                 console.log('Sum of numbers=',dataString);
                 //store result in db also send user the results
-                tripUpdate = {
+                var tripUpdate = {
                     ratingPoint  : 9,
                     turnings     : 65,
                     laneWeaving  : 75,
@@ -191,8 +219,10 @@ router.get('/end', function (req, res) {
                 Trip.findOneAndUpdate({'tripId' : tripId}, {$set : tripUpdate}, {'new': true},function (err, trip) {
                     if(err) return next(err);
                     else if(trip){
-                        //sending the updated data to user
                         res.json(trip)
+                    }
+                    else{
+                        res.end('trip x')
                     }
                 })
             });
@@ -204,6 +234,19 @@ router.get('/end', function (req, res) {
 
 
 
+
+router.post('/alive', function (req, res) {
+    var driverId = req.body.driverId;
+    var position = tripUserQueuePosition.driverId;
+    clearTimeout(tripUserQueue[position]);
+    // delete tripUserQueue.driverId; // delete old
+    tripUserQueue[position] =
+        setTimeout(function () {
+            //alert member
+            console.log(2,'15 minutes ' + driverId);
+        },5000); //15 minutes = 900000
+    res.json({status : true});
+});
 
 
 module.exports = router;
