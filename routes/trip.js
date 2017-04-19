@@ -13,8 +13,12 @@ var fs = require('fs');
 
 router.post('/init', function (req, res, next) {
 
-    var carRegNum = req.body.regNumber;
+    var vehicleRegNumber = req.body.vehicleRegNumber;
     var driverId  = req.body.driverId;
+
+    if(!vehicleRegNumber || !driverId || !req.body.x || !req.body.y || !req.body.boarding || !req.body.destinationEntered){
+        res.end({status : false, msg : "something missing!"});
+    }
 
     //driver connects the phone with car then click on init trip
     // or if the phone is connected to the internet and car this will be automatically hit
@@ -23,13 +27,14 @@ router.post('/init', function (req, res, next) {
         status : true,
         currentDriver : driverId
     }
-    Car.findOneAndUpdate({'regNumber' : carRegNum}, {$set : carUpdate}, {'new': true},function(err, car){
+    Car.findOneAndUpdate({'vehicleRegNumber' : vehicleRegNumber}, {$set : carUpdate}, {'new': true},function(err, car){
         if(car){
             Trip.count(function(err,tripCount){
                 var carOwner = car.owner;
                 var trip = new Trip();
-                trip.vehicleRegNumber = req.body.regNumber;
-                trip.boardingPoint = {x : req.body.x, y : req.body.y};
+                trip.vehicleRegNumber = req.body.vehicleRegNumber;
+                trip.boardingPoint.x = req.body.x;
+                trip.boardingPoint.y = req.body.y;
                 trip.boarding = req.body.boarding;
                 trip.driverId = driverId;
                 trip.destinationEntered = req.body.destinationEntered;
@@ -56,6 +61,7 @@ router.post('/init', function (req, res, next) {
             })
         }
         else if(!car){
+            res.json({status: false, msg : "Car not found"});
             // TODO: if car is not there ask user to add the car with all required details
             // Car will always be there as we installs the hardware we registers the car
         }
@@ -219,10 +225,11 @@ router.post('/end', function (req, res) {
                 Trip.findOneAndUpdate({'tripId' : tripId}, {$set : tripUpdate}, {'new': true},function (err, trip) {
                     if(err) return next(err);
                     else if(trip){
+                        trip.status = true;
                         res.json(trip)
                     }
                     else{
-                        res.end('trip x')
+                        res.end({status : false, msg : "trip not found!"});
                     }
                 })
             });

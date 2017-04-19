@@ -32,6 +32,9 @@ reqBody :
     x                  : Number,
     y                  : Number,
     destination        : String, (location obtained from geo points)
+    tripId             : String,
+    driverId           : String,
+    vehicleRegNumber   : String
 }
 ```
 Return:

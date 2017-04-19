@@ -6,7 +6,7 @@ var router = express.Router();
 var Car =  require('../models/car.js');
 
 router.post('add/check', function (req, res) {
-    Car.findOne({'regNumber' : regNumber}, function(err,car){
+    Car.findOne({'vehicleRegNumber' : vehicleRegNumber}, function(err,car){
         if(err) return next(err);
         else if(car){
             car.status = true;
@@ -19,8 +19,8 @@ router.post('add/check', function (req, res) {
 })
 
 router.post('/add/complete', function (req, res) {
-    var regNumber = req.body.regNumber;
-    Car.findOne({'regNumber' : regNumber}, function(err,car){
+    var vehicleRegNumber = req.body.vehicleRegNumber;
+    Car.findOne({'vehicleRegNumber' : vehicleRegNumber}, function(err,car){
         if(err) return next(err);
         else if(car) res.json({status : false, msg : "car already exist"});
         else{
@@ -31,7 +31,7 @@ router.post('/add/complete', function (req, res) {
                 newCar.type          = req.body.type;
                 newCar.age           = req.body.age;
                 newCar.manufacturer  = req.body.manufacturer;
-                newCar.regNumber     = regNumber //also the carid as it is unique
+                newCar.vehicleRegNumber     = vehicleRegNumber //also the carid as it is unique
                 newCar.status        = false;
                 newCar.owner         = req.body.owner;
                 newCar.save(function(err){

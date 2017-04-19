@@ -7,7 +7,7 @@ var carSchema = mongoose.Schema({
     type          : String,
     age           : Number,
     manufacturer  : String,
-    regNumber     : String,
+    vehicleRegNumber     : String,
     status        : Boolean, // if car is occupied or free, to be freed after each trip
     carId         : String,
     owner         : String, // who owns the car
