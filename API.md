@@ -132,3 +132,17 @@ Return:
     status             : true,
 }
 ```
+
+### Trip Details
+Type : Post  
+endpoint : ```/trip/data```  
+reqBody :
+```
+userId : String
+```
+Return:
+```
+{
+    status : true
+}
+```
