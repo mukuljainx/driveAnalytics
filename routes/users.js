@@ -49,14 +49,14 @@ router.post('/user_validate', Verify.verifyOrdinaryUser ,function(req, res) {
         // check to see if theres already a user with that email
         if (user) {
             if(!user.valid){
-                res.json({"response" : false, "email" : user.email, "name" : user.name});
+                res.json({"status" : false, "email" : user.email, "name" : user.name});
             }
             else if(user.valid){
                 res.cookie('access-token', Verify.getToken(user),{ httpOnly: true, secure : false });
-                res.json({"response" : true});
+                res.json({"status" : true});
             }
             else{
-                res.json({"response" : false});
+                res.json({"status" : false});
             }
         }
     });
@@ -85,10 +85,10 @@ router.post('/user_register_complete', Verify.verifyOrdinaryUser ,function(req, 
             }
             else if (user) {
                 res.cookie('access-token', Verify.getToken(user),{ httpOnly: true, secure : false });
-                res.json({"response" : true});
+                res.json({"status" : true});
             }
             else{
-                res.json({"response" : false, "msg" : "User not found"});
+                res.json({"status" : false, "msg" : "User not found"});
             }
         });
     })
@@ -97,7 +97,7 @@ router.post('/user_register_complete', Verify.verifyOrdinaryUser ,function(req, 
 
 router.post('/logout', Verify.verifyOrdinaryUser ,function(req, res) {
     res.clearCookie("access-token");
-    res.json({"response": true})
+    res.json({"status": true})
 });
 
 
@@ -106,7 +106,7 @@ router.post('/user_register_complete_mobile/google',function(req, res) {
     var client = new auth.OAuth2(googleSetting.clientID);
     client.verifyIdToken( req.body.access_token, googleSetting.clientID, function(err, login) {
           if(err){
-              res.json({msg : "false"});
+              res.json({status : "false"});
               return;
             }else{
               var payload = login.getPayload();
@@ -114,17 +114,17 @@ router.post('/user_register_complete_mobile/google',function(req, res) {
               User.findOne({'email' : email}, function(err,user){
                   if(err){
                       console.log(err);
-                      res.json({msg : "false"});
+                      res.json({status : "false", msg : err.message});
                       return;
                   }
                   else if(user){
                       console.log(user)
-                      res.json({msg : "false"});
+                      res.json({status : "false", msg : "user already exit"});
                       return;
                   }
                   else{
                       if(email !== req.body.email){
-                          res.json({msg : "false"});
+                          res.json({status : "false", msg : "something wrong!"});
                           return;
                       }
                       else{
@@ -149,11 +149,11 @@ router.post('/user_register_complete_mobile/google',function(req, res) {
                               user.save(function(err) {
                                   if(err){
                                       console.log(err);
-                                      res.json({msg : "false"});
+                                      res.json({status : "false", msg : err.message});
                                       return;
                                   }
                                   else{
-                                      res.json({msg : "true"});
+                                      res.json({status : "true"});
                                       return;
                                   }
                               });
@@ -171,7 +171,7 @@ router.post('/user_validate_mobile/google',function(req, res) {
     var client = new auth.OAuth2(googleSetting.clientID);
     client.verifyIdToken( req.body.access_token, googleSetting.clientID, function(err, login) {
           if(err){
-              res.json({msg : "false"});
+              res.json({status : "false"});
               return;
             }else{
               var payload = login.getPayload();
@@ -179,12 +179,12 @@ router.post('/user_validate_mobile/google',function(req, res) {
               User.findOne({'email' : email}, function(err,user){
                   if(err){
                       console.log(err);
-                      res.json({msg : "false"});
+                      res.json({status : "false"});
                       return;
                   }
                   else if(user){
                       userx = {
-                          msg : "true",
+                          status : "true",
                           phoneNumber  : user.phoneNumber,
                           country  : user.country,
                           dateOfBirth  : user.dateOfBirth,
@@ -203,7 +203,7 @@ router.post('/user_validate_mobile/google',function(req, res) {
                       return;
                   }
                   else{
-                      res.json({msg : "false"});
+                      res.json({status : "false"});
                   }
               })
           }

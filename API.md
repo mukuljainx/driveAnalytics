@@ -76,9 +76,9 @@ Return:
 {
     msg :[
             {
-                score             : Number,
+                ratingPoint       : Number,
                 vehicleRegNumber  : String,
-                scoreStatus       : String,
+                rating            : String,
                 distanceCovered   : String,
                 averageSpeed      : String,
                 driverId          : String
@@ -144,5 +144,27 @@ Return:
 ```
 {
     status : true
+}
+```
+
+
+## Login/Signuo
+
+### Signup
+Type : Post
+endpoint : ```user/user_register_complete_mobile/google```
+reqBody:
+```
+{
+    phoneNumber      
+    country          
+    dateOfBirth      
+    city             
+    gender           
+    name             
+    email            
+    valid            
+    googleid         
+    googletoken      
 }
 ```

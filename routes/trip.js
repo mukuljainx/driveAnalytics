@@ -117,7 +117,36 @@ router.post('/detail', function (req, res) {
             return next(err);
         }
         else if(trip){
-            res.json(trip);
+            // res.json(trip);
+            var finalmsg = {
+                status : true,
+                msg : "200",
+                tripId           : trip.tripId          ,
+                ratingPoint      : trip.ratingPoint     ,
+                vehicleRegNumber : trip.vehicleRegNumber,
+                rating           : trip.rating          ,
+                distanceCovered  : trip.distanceCovered ,
+                averageSpeed     : trip.averageSpeed    ,
+                driverId         : trip.driverId        ,
+                boardingPointx   : trip.boardingPoint.x,
+                boardingPointy   : trip.boardingPoint.y,
+                destinationPointx   : trip.destinationPoint.x,
+                destinationPointy   : trip.destinationPoint.y,
+                destinationEntered : trip.destinationEntered,
+                destinationLocated : trip.destinationLocated,
+                boarding        : trip.boarding,
+                startTime       : trip.startTime,
+                endTime         : trip.endTime,
+                turnings        : trip.turnings,
+                laneWeaving     : trip.laneWeaving,
+                laneDrifting    : trip.laneDrifting,
+                overSpeeding    : trip.overSpeeding,
+                carFollowing    : trip.carFollowing,
+                normal          : trip.normal,
+                drowsy          : trip.drowsy,
+                aggressive      : trip.aggressive
+            }
+            res.json(finalmsg);
         }
     })
 });
@@ -214,6 +243,7 @@ router.post('/end', function (req, res) {
                     averageSpeed : 55,
                     distanceCovered : 235,
                     ratingPoint  : 9,
+                    rating : "Good",
                     turnings     : 65,
                     laneWeaving  : 75,
                     laneDrifting : 85,
@@ -227,13 +257,37 @@ router.post('/end', function (req, res) {
                 }
                 Trip.findOneAndUpdate({'tripId' : tripId}, {$set : tripUpdate}, {'new': true},function (err, trip) {
                     if(trip){
-                        trip.status = true;
-                        trip.msg = "200";
-                        // trip.boardingPointx = trip.boardingPoint.x;
-                        // trip.boardingPointy = trip.boardingPoint.y;
-                        // trip.destinationPointx = trip.destinationPoint.x;
-                        // trip.destinationPointy = trip.destinationPoint.y;
-                        res.json(trip);
+                        // res.json(trip);
+
+                        var finalmsg = {
+                            status : true,
+                            msg : "200",
+                            tripId           : trip.tripId          ,
+                            ratingPoint      : trip.ratingPoint     ,
+                            vehicleRegNumber : trip.vehicleRegNumber,
+                            rating           : trip.rating          ,
+                            distanceCovered  : trip.distanceCovered ,
+                            averageSpeed     : trip.averageSpeed    ,
+                            driverId         : trip.driverId        ,
+                            boardingPointx   : trip.boardingPoint.x,
+                            boardingPointy   : trip.boardingPoint.y,
+                            destinationPointx   : trip.destinationPoint.x,
+                            destinationPointy   : trip.destinationPoint.y,
+                            destinationEntered : trip.destinationEntered,
+                            destinationLocated : trip.destinationLocated,
+                            boarding        : trip.boarding,
+                            startTime       : trip.startTime,
+                            endTime         : trip.endTime,
+                            turnings        : trip.turnings,
+                            laneWeaving     : trip.laneWeaving,
+                            laneDrifting    : trip.laneDrifting,
+                            overSpeeding    : trip.overSpeeding,
+                            carFollowing    : trip.carFollowing,
+                            normal          : trip.normal,
+                            drowsy          : trip.drowsy,
+                            aggressive      : trip.aggressive
+                        }
+                        res.json(finalmsg);
                     }
                     else if(!trip){
                         res.json({status : false, msg : "trip not found!"});
