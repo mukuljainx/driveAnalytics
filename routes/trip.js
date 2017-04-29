@@ -91,7 +91,7 @@ router.post('/list', function (req, res) {
                     "rating" : trips[i].rating,
                     "vehicleRegNumber" : trips[i].vehicleRegNumber,
                     "ratingPoint" : trips[i].ratingPoint,
-                    "destination" : trips[i].ratingPoint.destinationEntered,
+                    "destination" : trips[i].destinationEntered,
                     "tripId": trips[i].tripId,
                 }
                 data.push(temp);
