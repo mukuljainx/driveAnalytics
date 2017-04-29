@@ -47,13 +47,13 @@ router.post('/init', function (req, res, next) {
                     }
                     else{
                         //adding new user to the queue
-                        var timeoutFunction = setTimeout(function () {
-                            //alert member
-                            console.log(1,'15 minutes ' + driverId);
-                        },5000); //15 minutes = 900000
-
-                        tripUserQueuePosition[driverId] = tripUserQueue.length;
-                        tripUserQueue.push(timeoutFunction);
+                        // var timeoutFunction = setTimeout(function () {
+                        //     //alert member
+                        //     console.log(1,'15 minutes ' + driverId);
+                        // },5000); //15 minutes = 900000
+                        //
+                        // tripUserQueuePosition[driverId] = tripUserQueue.length;
+                        // tripUserQueue.push(timeoutFunction);
                         res.json({id : trip.tripId}); //id with which data will be logged in influxdb
                     }
                 })
@@ -196,16 +196,16 @@ router.post('/end', function (req, res) {
     var driverId = req.body.driverId;
 
 
-    var position = tripUserQueuePosition[driverId];
-    // tripUserQueuePosition.driverId.status = false;
-    clearTimeout(tripUserQueue[position]);
-    tripUserQueue.splice(position,1);
-
-    for(var key in tripUserQueuePosition){
-        if(tripUserQueuePosition.key > position){
-            tripUserQueuePosition.key = (tripUserQueuePosition.key - 1);
-        }
-    }
+    // var position = tripUserQueuePosition[driverId];
+    // // tripUserQueuePosition.driverId.status = false;
+    // clearTimeout(tripUserQueue[position]);
+    // tripUserQueue.splice(position,1);
+    //
+    // for(var key in tripUserQueuePosition){
+    //     if(tripUserQueuePosition.key > position){
+    //         tripUserQueuePosition.key = (tripUserQueuePosition.key - 1);
+    //     }
+    // }
 
     var spawn = require('child_process').spawn; // for python process
     var tripId = req.body.tripId;
