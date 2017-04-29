@@ -48,8 +48,7 @@ Return:
     boardingPoint   : {x : Number, y : Number},
     destinationPoint: {x : Number, y : Number},
     status          : Boolean, // false means new, not used
-    destinationEntered : String,
-    destinationLocated : String,
+    destination  : String,
     boarding        : String,
     startTime       : Date,
     endTime         : Date,
@@ -116,8 +115,7 @@ Return:
     destinationPointx  : Number,
     destinationPointy  : Number,
     status             : Boolean, // false means new, not used
-    destinationEntered : String,
-    destinationLocated : String,
+    destination : String,
     boarding           : String,
     startTime          : Date,
     endTime            : Date,
