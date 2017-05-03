@@ -23,7 +23,7 @@ var tripSchema = mongoose.Schema({
     acceleration    : Number, //score (base 100)
     normal          : Number, //ratio (driver condition)
     drowsy          : Number, //ratio (driver condition)
-    roadType       : String, //ratio (driver condition)
+    roadType       : String, 
     aggressive      : Number //ratio (driver condition)
 },{timestamps : {}});
 // userSchema.plugin(mongoose_csv);

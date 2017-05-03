@@ -135,12 +135,12 @@ router.post('/detail', function (req, res) {
                 startTime       : trip.startTime,
                 endTime         : trip.endTime,
                 turnings        : trip.turnings,
-                laneWeaving     : trip.laneWeaving,
-                laneDrifting    : trip.laneDrifting,
+                braking         : trip.braking,
                 overSpeeding    : trip.overSpeeding,
-                carFollowing    : trip.carFollowing,
+                acceleration    : trip.acceleration,
                 normal          : trip.normal,
                 drowsy          : trip.drowsy,
+                roadType        : trip.roadType,
                 aggressive      : trip.aggressive
             }
             res.json(finalmsg);
@@ -211,7 +211,6 @@ router.post('/end', function (req, res) {
             destinationPoint : req.body.destinationPoint,
             endTime : new Date(),
     };
-    var x = "123";
     var fields = ['time', 'driverId', 'engineSpeed', 'throttle', 'tripId', 'vehicleSpeed'];
     influxTripDetail.query(`select * from vehiclex1 where tripId = ${Influx.escape.stringLit(x)}`).then(function (result) {
         // res.json(result);
@@ -240,15 +239,15 @@ router.post('/end', function (req, res) {
                     averageSpeed : 55,
                     distanceCovered : 235,
                     ratingPoint  : 9,
-                    label : "Good",
-                    turnings     : 65,
-                    laneWeaving  : 75,
-                    laneDrifting : 85,
+                    label        : "Good",
+                    braking      : 65,
+                    acceleration : 65,
+                    turnings : 65,
                     overSpeeding : 95,
-                    carFollowing : 90,
                     normal       : 0.7,
                     drowsy       : 0.3,
                     aggressive   : 0.5,
+                    roadType     : "Good",
                     destinationPoint : {x :req.body.x, y : req.body.y},
                     destinationLocated : req.body.destination
                 }
@@ -275,12 +274,12 @@ router.post('/end', function (req, res) {
                             startTime       : trip.startTime,
                             endTime         : trip.endTime,
                             turnings        : trip.turnings,
-                            laneWeaving     : trip.laneWeaving,
-                            laneDrifting    : trip.laneDrifting,
+                            braking         : trip.braking,
                             overSpeeding    : trip.overSpeeding,
-                            carFollowing    : trip.carFollowing,
+                            acceleration    : trip.acceleration,
                             normal          : trip.normal,
                             drowsy          : trip.drowsy,
+                            roadType        : trip.roadType,
                             aggressive      : trip.aggressive
                         }
                         res.json(finalmsg);

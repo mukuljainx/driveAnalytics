@@ -41,7 +41,7 @@ Return:
     tripId          : String,
     ratingPoint     : Number,
     vehicleRegNumber: String,
-    rating          : String,
+    label           : String,
     distanceCovered : String,
     averageSpeed    : String,
     driverId        : String, // who is driving the car
@@ -59,7 +59,8 @@ Return:
     carFollowing    : Number, //score (base 100)
     normal          : Number, //ratio (driver condition)
     drowsy          : Number, //ratio (driver condition)
-    aggressive      : Number //ratio (driver condition)
+    aggressive      : Number, //ratio (driver condition)
+    roadType        : String
 }
 ```
 
@@ -77,7 +78,7 @@ Return:
             {
                 ratingPoint       : Number,
                 vehicleRegNumber  : String,
-                rating            : String,
+                label             : String,
                 distanceCovered   : String,
                 averageSpeed      : String,
                 driverId          : String
@@ -105,7 +106,7 @@ Return:
 {
     ratingPoint        : Number,
     vehicleRegNumber   : String,
-    rating             : String,
+    label              : String,
     distanceCovered    : String,
     averageSpeed       : String,
     driverId           : { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // if driver is known
@@ -119,14 +120,14 @@ Return:
     boarding           : String,
     startTime          : Date,
     endTime            : Date,
-    turnings           : Number, //score (base 100)
-    laneWeaving        : Number, //score (base 100)
-    laneDrifting       : Number, //score (base 100)
-    overSpeeding       : Number, //score (base 100)
-    carFollowing       : Number, //score (base 100)
-    normal             : Number, //ratio (driver condition)
-    drowsy             : Number, //ratio (driver condition)
-    aggressive         : Number //ratio (driver condition)
+    turnings        : Number, //score (base 100)
+    braking         : Number, //score (base 100)
+    overSpeeding    : Number, //score (base 100)
+    acceleration    : Number, //score (base 100)
+    normal          : Number, //ratio (driver condition)
+    drowsy          : Number, //ratio (driver condition)
+    roadType       : String,
+    aggressive      : Number //ratio (driver condition)
     status             : true,
 }
 ```
