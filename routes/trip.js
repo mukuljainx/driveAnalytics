@@ -88,7 +88,7 @@ router.post('/list', function (req, res) {
                     "driverId" : trips[i].driverId,
                     "averageSpeed" : trips[i].averageSpeed,
                     "distanceCovered" : trips[i].distanceCovered,
-                    "rating" : trips[i].rating,
+                    "label" : trips[i].label,
                     "vehicleRegNumber" : trips[i].vehicleRegNumber,
                     "ratingPoint" : trips[i].ratingPoint,
                     "destination" : trips[i].destinationEntered,
@@ -121,7 +121,7 @@ router.post('/detail', function (req, res) {
                 tripId           : trip.tripId          ,
                 ratingPoint      : trip.ratingPoint     ,
                 vehicleRegNumber : trip.vehicleRegNumber,
-                rating           : trip.rating          ,
+                label            : trip.label          ,
                 distanceCovered  : trip.distanceCovered ,
                 averageSpeed     : trip.averageSpeed    ,
                 driverId         : trip.driverId        ,
@@ -167,7 +167,7 @@ router.post('/createlist', function (req, res) {
     var trip = new Trip();
     trip.ratingPoint      =  req.body.ratingPoint;
     trip.vehicleRegNumber =  req.body.vehicleRegNumber;
-    trip.rating           =  req.body.rating;
+    trip.label            =  req.body.label;
     trip.distanceCovered  =  req.body.distanceCovered;
     trip.averageSpeed     =  req.body.averageSpeed;
     trip.driverId         =  req.body.driverId;
@@ -240,7 +240,7 @@ router.post('/end', function (req, res) {
                     averageSpeed : 55,
                     distanceCovered : 235,
                     ratingPoint  : 9,
-                    rating : "Good",
+                    label : "Good",
                     turnings     : 65,
                     laneWeaving  : 75,
                     laneDrifting : 85,
@@ -262,7 +262,7 @@ router.post('/end', function (req, res) {
                             tripId           : trip.tripId          ,
                             ratingPoint      : trip.ratingPoint     ,
                             vehicleRegNumber : trip.vehicleRegNumber,
-                            rating           : trip.rating          ,
+                            label            : trip.label          ,
                             distanceCovered  : trip.distanceCovered ,
                             averageSpeed     : trip.averageSpeed    ,
                             driverId         : trip.driverId        ,

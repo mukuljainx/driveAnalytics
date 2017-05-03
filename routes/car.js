@@ -31,7 +31,7 @@ router.post('/add/complete', function (req, res) {
                 newCar.type          = req.body.type;
                 newCar.age           = req.body.age;
                 newCar.manufacturer  = req.body.manufacturer;
-                newCar.vehicleRegNumber     = vehicleRegNumber //also the carid as it is unique
+                newCar.vehicleRegNumber = vehicleRegNumber //also the carid as it is unique
                 newCar.status        = false;
                 newCar.owner         = req.body.owner;
                 newCar.save(function(err){
