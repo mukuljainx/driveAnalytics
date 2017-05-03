@@ -7,6 +7,7 @@ var tripSchema = mongoose.Schema({
     vehicleRegNumber: String,
     label           : String,
     distanceCovered : String,
+    duration        : Number,
     averageSpeed    : String,
     driverId        : String, // who is driving the car
     boardingPoint   : {x : Number, y : Number},
@@ -23,7 +24,7 @@ var tripSchema = mongoose.Schema({
     acceleration    : Number, //score (base 100)
     normal          : Number, //ratio (driver condition)
     drowsy          : Number, //ratio (driver condition)
-    roadType       : String, 
+    roadType       : String,
     aggressive      : Number //ratio (driver condition)
 },{timestamps : {}});
 // userSchema.plugin(mongoose_csv);
