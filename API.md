@@ -108,6 +108,7 @@ Return:
     vehicleRegNumber   : String,
     label              : String,
     distanceCovered    : String,
+    duration           : Number,
     averageSpeed       : String,
     driverId           : { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // if driver is known
     tripDriver         : String, // who is driving the car
