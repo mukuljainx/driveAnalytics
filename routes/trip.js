@@ -13,8 +13,10 @@ var fs = require('fs');
 
 router.post('/init', function (req, res, next) {
 
-    var vehicleRegNumber = req.body.vehicleRegNumber;
-    var driverId  = req.body.driverId;
+    // var vehicleRegNumber = req.body.vehicleRegNumber;
+    var vehicleRegNumber = "MA-22-X2D3";
+    // var driverId  = req.body.driverId;
+    var driverId  = "driver-1";
 
     if(!vehicleRegNumber || !driverId || !req.body.x || !req.body.y || !req.body.boarding || !req.body.destinationEntered){
         res.json({status : false, msg : "something missing!"});
@@ -35,9 +37,11 @@ router.post('/init', function (req, res, next) {
                 var trip = new Trip();
                 trip.vehicleRegNumber = req.body.vehicleRegNumber;
                 trip.boardingPoint = { x :req.body.x, y : req.body.y};
-                trip.boarding = req.body.boarding;
+                // trip.boarding = req.body.boarding;
+                trip.boarding = "Trip";
                 trip.driverId = driverId;
-                trip.destinationEntered = req.body.destinationEntered;
+                // trip.destinationEntered = req.body.destinationEntered;
+                trip.destinationEntered = (tripCount + 1) ;
                 trip.status = true;
                 trip.startTime = new Date();
                 trip.tripId = "trip-" + (tripCount + 1);
@@ -131,7 +135,7 @@ router.post('/detail', function (req, res) {
                 destinationPointx   : trip.destinationPoint.x,
                 destinationPointy   : trip.destinationPoint.y,
                 destination : trip.destinationEntered,
-                // destinationLocated : trip.destinationLocated,
+                destinationLocated : trip.destinationLocated,
                 boarding        : trip.boarding,
                 startTime       : trip.startTime,
                 endTime         : trip.endTime,
@@ -212,6 +216,7 @@ router.post('/end', function (req, res) {
             destinationPoint : req.body.destinationPoint,
             endTime : new Date(),
     };
+    var x = "trip-1";
     var fields = ['time', 'driverId', 'engineSpeed', 'throttle', 'tripId', 'vehicleSpeed'];
     influxTripDetail.query(`select * from vehiclex1 where tripId = ${Influx.escape.stringLit(x)}`).then(function (result) {
         // res.json(result);
