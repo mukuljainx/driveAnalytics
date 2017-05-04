@@ -254,6 +254,8 @@ router.post('/end', function (req, res) {
                     drowsy       : 0.3,
                     aggressive   : 0.5,
                     roadType     : "Good",
+                    averageSpeed : 70,
+                    distanceCovered : 15, 
                     destinationPoint : {x :req.body.x, y : req.body.y},
                     destinationLocated : req.body.destination
                 }
