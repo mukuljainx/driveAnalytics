@@ -24,7 +24,7 @@
     "passport-google-oauth": "^1.0.0",
     "passport-google-token": "^0.1.2",
     "serve-favicon": "~2.3.0",
-    "socket.io": "^1.7.3"
+    "socket.io": "^2.4.0"
   },
   "devDependencies": {
     "babel-preset-es2015": "^6.22.0",
