@@ -15,7 +15,7 @@
     "influx": "^5.0.0-alpha.4",
     "jade": "~1.11.0",
     "json2csv": "^3.7.3",
-    "jsonwebtoken": "^7.3.0",
+    "jsonwebtoken": "^9.0.0",
     "mongoose": "^4.8.5",
     "morgan": "~1.7.0",
     "njwt": "^0.3.2",
