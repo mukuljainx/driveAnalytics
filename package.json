@@ -10,7 +10,7 @@
     "cookie-parser": "~1.4.3",
     "debug": "~2.2.0",
     "ejs": "^2.5.3",
-    "express": "~4.13.4",
+    "express": "~4.19.2",
     "google-auth-library": "^0.10.0",
     "influx": "^5.0.0-alpha.4",
     "jade": "~1.11.0",
